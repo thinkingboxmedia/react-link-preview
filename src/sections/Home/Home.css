@@ -1,0 +1,46 @@
+
+.Home {
+  margin: 0 auto 0 auto;
+  max-width: 40vw;
+  p {
+    margin-top: 50px;
+  }
+  pre {
+    background-color: white;
+
+    ol {
+      padding-left: 30px;
+    }
+    li {
+      background: white;
+    }
+    li.L0, li.L1, li.L2, li.L3,
+    li.L5, li.L6, li.L7, li.L8 {
+      list-style-type: decimal !important;
+    }
+  }
+  code {
+    padding: 0 3px;
+    font-size: 14px;
+    background-color: #e3e3e3;
+    color: darkslategray;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th {
+    background-color: #e3e3e3;
+  }
+  td {
+    font-family: monospace;
+    background-color: white;
+  }
+  th, td {
+    padding: 5px;
+  }
+  table, th, td {
+    border: 1px solid darkslategray;
+  }
+
+}
