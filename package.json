@@ -2,11 +2,11 @@
   "name": "react-link-preview",
   "version": "0.1.0",
   "description": "Wrap your React Router Link with the React Link Preview and feed it a component. You'll get a modal with a preview of that component on long-press and a regular link otherwise.",
-  "main": "dist/index.js",
+  "main": "src/components/LinkPreview/index.js",
   "scripts": {
     "dev": "concurrently \"npm run lib:watch\" \"npm run docs\"",
-    "lib": "babel src -d docs/lib --copy-files",
-    "lib:watch": "babel src -w -d docs/lib --copy-files",
+    "lib": "babel src -d dev --copy-files",
+    "lib:watch": "babel src -w -d dev --copy-files",
     "docs": "webpack-dev-server --mode development",
     "docs:prod": "webpack --mode production"
   },
@@ -23,9 +23,7 @@
   "license": "MIT",
   "peerDependencies": {
     "react": "^15.3.0 || ^16.2.0",
-    "react-dom": "^15.3.0 || ^16.2.0",
-    "react-router": "^4.1.1",
-    "react-router-dom": "^4.1.1"
+    "react-dom": "^15.3.0 || ^16.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.46",
