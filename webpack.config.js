@@ -6,7 +6,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 // https://github.com/markusenglund/react-npm-component-starter
 
 module.exports = {
-  entry: path.join(__dirname, "src"),
+  entry: './src/index.js',
   output: {
     path: path.join(__dirname, "docs"),
     filename: "bundle.js"
@@ -16,7 +16,8 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         use: "babel-loader",
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        include: path.resolve('src')
       },
       {
         test: /\.css$/,
