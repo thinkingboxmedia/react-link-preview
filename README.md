@@ -1,6 +1,22 @@
 # LinkPreview React Component
 _A Thinkingbox Endeavour_
 
+**Demo: [LinkPreview Github Page](https://thinkingboxmedia.github.io/react-link-preview/)**
+
+### Adding it to your react project
+
+`import 'LinkPreview' from 'react-link-preview';`
+
+### Forking this component
+
+Start the dev server:  
+`npm run dev`
+
+Compile the production version of the demo (do this before pushing to master or making an MR/PR):  
+`npm run docs:prod`
+
+### What it is
+
 This wrapper adds a modal preview to links or buttons -- on long-press -- that displays any react component you provide. 
 A small progress bar shows the long-press progress.
 This is a very simple component that wraps the `react-router-dom <Link />` component with a bit of added functionality.
