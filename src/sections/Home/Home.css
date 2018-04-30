@@ -2,11 +2,17 @@
 .Home {
   margin: 0 auto 0 auto;
   max-width: 40vw;
+  @media (max-width: 768px) {
+    max-width: 90vw;
+  }
   p {
     margin-top: 50px;
   }
   pre {
     background-color: white;
+    @media (max-width: 768px) {
+      font-size: 10px;
+    }
 
     ol {
       padding-left: 30px;
