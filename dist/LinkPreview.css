@@ -1,0 +1,107 @@
+
+/* Primary. */
+.LinkPreview {
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    position: relative;
+    display: inline-block;
+
+    /* Animation Defaults. */
+    animation-duration: 1000ms;
+
+    @define-mixin pseudo-loading-bar {
+        display: block;
+        content: '.';
+        font-size: 0;
+        height: 4px;
+        background-color: darkgrey;
+        border-radius: 2px;
+        transform: scale(0, 0.5);
+    }
+
+    &::after {
+        @mixin pseudo-loading-bar;
+        transform-origin: top left;
+    }
+
+    &.load-bar-above {
+        &::after {
+            display: none;
+        }
+        &::before {
+            @mixin pseudo-loading-bar;
+            transform-origin: bottom left;
+        }
+    }
+
+    &.pressing {
+        &::before, &::after {
+            animation-name: pressing;
+            animation-duration: inherit;
+            animation-timing-function: cubic-bezier(.13,.4,.01,.25);
+            animation-fill-mode: forwards;
+        }
+    }
+    &.LongPress {
+
+    }
+    .LinkPreviewModal {
+        height: 100vh;
+        width: 100vw;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        opacity: 0;
+        background-color: white;
+        pointer-events: none;
+        z-index: -1000;
+        text-align: center;
+
+        /* Animation Defaults. */
+        animation-delay: 1200ms;
+        animation-duration: 200ms;
+
+        &.modal-show {
+            z-index: 5;
+            animation-name: modalShow;
+            animation-duration: inherit;
+            animation-timing-function: ease-in-out;
+            animation-delay: inherit;
+            animation-fill-mode: forwards;
+        }
+    }
+}
+
+@keyframes pressing {
+    0% {
+        opacity: 0;
+        transform: scale(0, 0.5);
+    }
+    30% {
+        opacity: 1;
+    }
+    99% {
+        background-color: darkgrey;
+    }
+    100% {
+        background-color: forestgreen;
+        transform: scale(1, 1);
+    }
+}
+
+@keyframes modalShow {
+    from {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
