@@ -15,6 +15,9 @@ Start the dev server:
 Compile the production version of the demo (do this before pushing to master or making an MR/PR):  
 `npm run docs:prod`
 
+Compile the distribution version of the component (do this before pushing to master or to NPM):  
+`npm run dist-build`
+
 ### What it is
 
 This wrapper adds a modal preview to links or buttons -- on long-press -- that displays any react component you provide. 
