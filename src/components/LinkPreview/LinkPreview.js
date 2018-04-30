@@ -51,12 +51,13 @@ export default class LinkPreview extends React.Component {
       e.preventDefault();
       e.nativeEvent && e.nativeEvent.stopImmediatePropagation();
     }
-    this.setState({ pressStart: 0 });
   }
 
   mouseDownHandler(e) {
-    if(!this.state.pressStart) this.setState({ pressing: true, pressStart: Date.now() });
-    if(this.timer) clearTimeout(this.timer);
+    this.setState({ pressing: true });
+    if(!this.state.pressStart) this.setState({ pressStart: Date.now() });
+
+    clearTimeout(this.timer);
     this.timer = setTimeout(() => {
       this.setState({ longpressing: true });
     }, this.props.longPressTime);
@@ -64,6 +65,13 @@ export default class LinkPreview extends React.Component {
 
   mouseUpHandler(e) {
     this.setState({ pressing: false, longpressing: false });
+
+    clearTimeout(this.timer);
+    this.timer = null;
+  }
+
+  previewEnd() {
+    this.setState({ pressing: false, longpressing: false, pressStart: 0 });
     if(this.timer) clearTimeout(this.timer);
     this.timer = null;
   }
@@ -114,7 +122,7 @@ export default class LinkPreview extends React.Component {
         <div className={modalClasses} style={dynamicModalStyles}>
           { previewComponent }
         </div>
-        <Link {...passableProps} onClick={this.clickHandler.bind(this)}>
+        <Link {...passableProps} onClick={this.clickHandler.bind(this)} onDragEnd={this.previewEnd.bind(this)}>
           {this.props.children}
         </Link>
       </div>
