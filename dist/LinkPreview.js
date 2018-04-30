@@ -96,21 +96,19 @@ function (_React$Component) {
         e.preventDefault();
         e.nativeEvent && e.nativeEvent.stopImmediatePropagation();
       }
-
-      this.setState({
-        pressStart: 0
-      });
     }
   }, {
     key: "mouseDownHandler",
     value: function mouseDownHandler(e) {
       var _this2 = this;
 
+      this.setState({
+        pressing: true
+      });
       if (!this.state.pressStart) this.setState({
-        pressing: true,
         pressStart: Date.now()
       });
-      if (this.timer) clearTimeout(this.timer);
+      clearTimeout(this.timer);
       this.timer = setTimeout(function () {
         _this2.setState({
           longpressing: true
@@ -123,6 +121,17 @@ function (_React$Component) {
       this.setState({
         pressing: false,
         longpressing: false
+      });
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
+  }, {
+    key: "previewEnd",
+    value: function previewEnd() {
+      this.setState({
+        pressing: false,
+        longpressing: false,
+        pressStart: 0
       });
       if (this.timer) clearTimeout(this.timer);
       this.timer = null;
@@ -174,7 +183,8 @@ function (_React$Component) {
         className: modalClasses,
         style: dynamicModalStyles
       }, previewComponent), _react.default.createElement(_reactRouterDom.Link, _extends({}, passableProps, {
-        onClick: this.clickHandler.bind(this)
+        onClick: this.clickHandler.bind(this),
+        onDragEnd: this.previewEnd.bind(this)
       }), this.props.children));
     }
   }]);
