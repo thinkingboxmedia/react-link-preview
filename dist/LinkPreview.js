@@ -45,6 +45,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 // Constants.
 var MODAL_POPUP_ANIMATION_TIME = 200;
+var IOS_3D_TOUCH_THRESHOLD = 0.14;
 
 var LinkPreview =
 /*#__PURE__*/
@@ -99,7 +100,7 @@ function (_React$Component) {
     }
   }, {
     key: "mouseDownHandler",
-    value: function mouseDownHandler(e) {
+    value: function mouseDownHandler() {
       var _this2 = this;
 
       this.setState({
@@ -117,7 +118,7 @@ function (_React$Component) {
     }
   }, {
     key: "mouseUpHandler",
-    value: function mouseUpHandler(e) {
+    value: function mouseUpHandler() {
       this.setState({
         pressing: false,
         longpressing: false
@@ -136,6 +137,26 @@ function (_React$Component) {
       if (this.timer) clearTimeout(this.timer);
       this.timer = null;
     }
+    /*
+     * Fixes for iOS Safari and macOS Safari
+     */
+
+  }, {
+    key: "mouseLeave",
+    value: function mouseLeave(e) {
+      // In the space during press, before longpress, if you move the mouse off the element on Safari it won't always call mouseup.
+      if (this.state.pressing && !this.state.longpressing) {
+        this.previewEnd(e);
+      }
+    }
+  }, {
+    key: "touchForceChange",
+    value: function touchForceChange(e) {
+      // To prevent 3D peek from interfering with our own peek, we'll stop ours at this threshold and let the iOS one take over.
+      if (e.touches && e.touches.length && e.touches[0].force > IOS_3D_TOUCH_THRESHOLD) {
+        this.previewEnd(e);
+      }
+    }
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
@@ -147,6 +168,7 @@ function (_React$Component) {
       this.wrapper.addEventListener("touchstart", this.mouseDownHandler.bind(this));
       this.wrapper.addEventListener("touchend", this.mouseUpHandler.bind(this));
       this.wrapper.addEventListener("contextmenu", this.mouseUpHandler.bind(this));
+      this.wrapper.addEventListener("touchforcechange", this.touchForceChange.bind(this));
     }
   }, {
     key: "render",
@@ -184,7 +206,8 @@ function (_React$Component) {
         style: dynamicModalStyles
       }, previewComponent), _react.default.createElement(_reactRouterDom.Link, _extends({}, passableProps, {
         onClick: this.clickHandler.bind(this),
-        onDragEnd: this.previewEnd.bind(this)
+        onDragEnd: this.previewEnd.bind(this),
+        onMouseLeave: this.mouseLeave.bind(this)
       }), this.props.children));
     }
   }]);
