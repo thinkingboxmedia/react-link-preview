@@ -1,6 +1,6 @@
 {
   "name": "react-link-preview",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Wrap your React Router Link with the React Link Preview and feed it a component. You'll get a modal with a preview of that component on long-press and a regular link otherwise.",
   "main": "dist/index.js",
   "scripts": {

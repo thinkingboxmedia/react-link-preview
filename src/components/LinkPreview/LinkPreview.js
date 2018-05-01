@@ -12,6 +12,7 @@ import styles from './LinkPreview.css';
 
 // Constants.
 const MODAL_POPUP_ANIMATION_TIME = 200;
+const IOS_3D_TOUCH_THRESHOLD = 0.14;
 
 export default class LinkPreview extends React.Component {
 
@@ -53,7 +54,7 @@ export default class LinkPreview extends React.Component {
     }
   }
 
-  mouseDownHandler(e) {
+  mouseDownHandler() {
     this.setState({ pressing: true });
     if(!this.state.pressStart) this.setState({ pressStart: Date.now() });
 
@@ -63,7 +64,7 @@ export default class LinkPreview extends React.Component {
     }, this.props.longPressTime);
   }
 
-  mouseUpHandler(e) {
+  mouseUpHandler() {
     this.setState({ pressing: false, longpressing: false });
 
     clearTimeout(this.timer);
@@ -76,6 +77,24 @@ export default class LinkPreview extends React.Component {
     this.timer = null;
   }
 
+  /*
+   * Fixes for iOS Safari and macOS Safari
+   */
+
+  mouseLeave(e) {
+    // In the space during press, before longpress, if you move the mouse off the element on Safari it won't always call mouseup.
+    if(this.state.pressing && !this.state.longpressing) {
+      this.previewEnd(e);
+    }
+  }
+
+  touchForceChange(e) {
+    // To prevent 3D peek from interfering with our own peek, we'll stop ours at this threshold and let the iOS one take over.
+    if(e.touches && e.touches.length && e.touches[0].force > IOS_3D_TOUCH_THRESHOLD) {
+      this.previewEnd(e);
+    }
+  }
+
   componentDidMount() {
     if(!this.props.mobileOnly) {
       this.wrapper.addEventListener("mousedown", this.mouseDownHandler.bind(this));
@@ -84,6 +103,7 @@ export default class LinkPreview extends React.Component {
     this.wrapper.addEventListener("touchstart", this.mouseDownHandler.bind(this));
     this.wrapper.addEventListener("touchend", this.mouseUpHandler.bind(this));
     this.wrapper.addEventListener("contextmenu", this.mouseUpHandler.bind(this));
+    this.wrapper.addEventListener("touchforcechange", this.touchForceChange.bind(this));
   }
 
 	render() {
@@ -122,7 +142,10 @@ export default class LinkPreview extends React.Component {
         <div className={modalClasses} style={dynamicModalStyles}>
           { previewComponent }
         </div>
-        <Link {...passableProps} onClick={this.clickHandler.bind(this)} onDragEnd={this.previewEnd.bind(this)}>
+        <Link {...passableProps}
+              onClick={this.clickHandler.bind(this)}
+              onDragEnd={this.previewEnd.bind(this)}
+              onMouseLeave={this.mouseLeave.bind(this)}>
           {this.props.children}
         </Link>
       </div>
